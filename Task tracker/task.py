@@ -8,6 +8,17 @@ class Task():
         self.__createdAt = createdAt
         self.__updatedAt = updatedAt
         
+    def __str__(self): 
+        return (
+            f"\nTarea con ID: {self.get_id()}\n"
+            f"Descripcion: {self.get_description()}\n"
+            f"Status: {self.get_status()}\n"
+            f"Creado: {self.get_createdAt()}\n"
+            f"Actualizado: {self.get_updatedAt()}"
+        )
+
+
+
     #Getters
     def get_id(self):
         return self.__id
