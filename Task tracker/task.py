@@ -3,10 +3,10 @@ from datetime import datetime
 class Task():
     
     #Constructor
-    def __init__(self, id, description, status):
-        self.__id = id
-        self.__description = description
-        self.__status = status
+    def __init__(self, description):
+        self.__id = self.set_id()
+        self.__description = self.validar_string(description)
+        self.__status = self.set_status()
         self.__createdAt = self.set_createdAt()
         self.__updatedAt = 'No'
         
@@ -36,12 +36,35 @@ class Task():
         return self.__updatedAt
     
     #Setters
+    def set_id(self):
+        self.__id += 1
+        
     def set_description(self, new_description):
         self.__description = self.validar_string(new_description)
         
-    def set_status(self, new_status):
-        self.__status = self.validar_string(new_status)
+    def set_status(self, command, id):
         
+        # Obtenemos la tarea por ID
+        tarea = self.get_id(id)
+        
+        if not tarea:
+            print(f"No se encontró la tarea con ID {id}.")
+            return
+
+        # Mapear comandos a estados
+        if command == 'mark-in-progress':
+            tarea['status'] = 'In Progress'
+        elif command == 'mark-todo':
+            tarea['status'] = 'To do'
+        elif command == 'mark-done':
+            tarea['status'] = 'Done'
+        else:
+            print(f"Comando '{command}' incorrecto.")
+            return
+
+        # Mensaje de confirmación
+        print(f"El estado de la tarea con ID {id} ha sido actualizado a '{tarea['status']}'.")
+            
     def set_createdAt(self):
         self.__createdAt = datetime.now()
         return f'{self.__createdAt.strftime('%H:%M:%S')}'
@@ -62,9 +85,9 @@ class Task():
         return valor
     
     @staticmethod
-    def validar_cantidad(cantidad):
-        if not isinstance(cantidad, int):
+    def validar_id(numero):
+        if not isinstance(numero, int):
             raise TypeError('Introduce un valor válido (int)')
-        if cantidad < 0:
-            raise ValueError("Introduce una cantidad mayor o igual a 0")
-        return cantidad
+        if numero < 0:
+            raise ValueError("Introduce un id mayor o igual a 0")
+        return numero

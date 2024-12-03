@@ -1,5 +1,5 @@
 from Task import Task
 
-tarea = Task(1, 'algo', 'status')
+tarea = Task(1, 'algo')
 
 print(tarea)
