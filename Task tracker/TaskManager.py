@@ -4,11 +4,13 @@ from Task import Task
 
 class TaskManager():
     
+    #Constructor
     def __init__(self, ficheroTareas = "tareas.json"):
         self.__ficheroTareas = ficheroTareas
         self.__tareas= []
         self.cargar_tareas()
-        
+    
+    #Getters
     def get_ficheroTareas(self):
         return self.__ficheroTareas
     
@@ -31,6 +33,7 @@ class TaskManager():
                     self.get_tareas() = []
                     print(f'Archivo {self.get_ficheroTareas()} vacío o con formato inválido. Inicializando una lista vacía.')
     
+    #Guardar tarea en el fichero JSON
     def guardar_tareas(self):
         try:
             # Convertir la lista de tareas a una lista de diccionarios
@@ -42,7 +45,7 @@ class TaskManager():
         except Exception as e:
             print(f"Error al guardar las tareas: {e}")
 
-    
+    #Añadir tarea
     def add_tarea(self, descripcion):
         
         try:
@@ -53,7 +56,27 @@ class TaskManager():
             print(f'Tarea añadida correctamente! (ID: {nueva_tarea.get_id()})')
         except Exception as e:
             print(f'Error al añadir la tarea: {e}')
-      
+            
+    #Actualizar tarea
+    def update_tarea(self, id, nueva_descripcion):
+        
+        try:
+            #Buscamos la tarea por ID
+            tarea = next((tarea for tarea in self.get_tareas() if tarea.get_id() == id), None)
+            
+            if not tarea:
+                print(f'No se encontró la tarea con ID: {id}')
+                return
+            
+            tarea.set_description(nueva_descripcion)
+            self.guardar_tareas()
+            
+            print(f'Tarea con ID: {id} actulizada correctamente!')
+        
+        except Exception as e:
+            print(f'Error al actualizar la tarea: {e}')
+    
+    #Actualizar el status de la tarea en función del comando usado
     def update_status(self, command, id):
         
         # Obtenemos la tarea por ID
