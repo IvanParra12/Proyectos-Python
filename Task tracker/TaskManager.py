@@ -49,6 +49,8 @@ class TaskManager():
             nueva_tarea = Task(descripcion)
             self.get_tareas().append(nueva_tarea)
             self.guardar_tareas()
+            
+            print(f'Tarea añadida correctamente! (ID: {nueva_tarea.get_id()})')
         except Exception as e:
             print(f'Error al añadir la tarea: {e}')
       
