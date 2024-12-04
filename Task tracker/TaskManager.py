@@ -30,6 +30,27 @@ class TaskManager():
                 except json.JSONDecodeError:
                     self.get_tareas() = []
                     print(f'Archivo {self.get_ficheroTareas()} vacío o con formato inválido. Inicializando una lista vacía.')
+    
+    def guardar_tareas(self):
+        try:
+            # Convertir la lista de tareas a una lista de diccionarios
+            datos_tareas = [tarea.to_dict() for tarea in self.get_tareas()]
+            
+            # Guardar en el archivo JSON
+            with open(self.get_ficheroTareas(), 'w') as archivo:
+                json.dump(datos_tareas, archivo, indent=4)
+        except Exception as e:
+            print(f"Error al guardar las tareas: {e}")
+
+    
+    def add_tarea(self, descripcion):
+        
+        try:
+            nueva_tarea = Task(descripcion)
+            self.get_tareas().append(nueva_tarea)
+            self.guardar_tareas()
+        except Exception as e:
+            print(f'Error al añadir la tarea: {e}')
       
     def update_status(self, command, id):
         
