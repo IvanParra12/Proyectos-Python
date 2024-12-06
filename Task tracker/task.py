@@ -58,26 +58,25 @@ class Task():
         
         return cls._contador_id
     
-    #Añadimos la información de la tarea a un diccionario 
-    # para tratar mejor el almacenamiento en JSON
     def to_dict(self):
+        # Convertir la tarea a un diccionario, asegurándonos de que las fechas sean cadenas
         return {
             "id": self.__id,
             "description": self.__description,
             "status": self.__status,
-            "created_at": self.__createdAt,
-            "updated_at": self.__updatedAt
+            "created_at": self.__createdAt.strftime("%Y-%m-%d %H:%M:%S"),  # Convertimos a string
+            "updated_at": self.__updatedAt.strftime("%Y-%m-%d %H:%M:%S") if self.__updatedAt else "No"
         }
-
-    #Creamos una tarea a partir de un diccionario
+    
     @staticmethod
     def from_dict(data):
-        task = Task(data["description"], data["status"])
-        task.__id = data["id"]
-        task.__createdAt = data["created_at"]
-        task.__updatedAt = data["updated_at"]
-        
-        return task
+        # Crear una tarea desde un diccionario
+        tarea = Task(data['description'])
+        tarea.__id = data['id']
+        tarea.__status = data['status']
+        tarea.__createdAt = datetime.strptime(data['created_at'], "%Y-%m-%d %H:%M:%S")  # Convertimos de string a datetime
+        tarea.__updatedAt = datetime.strptime(data['updated_at'], "%Y-%m-%d %H:%M:%S") if data['updated_at'] != "No" else None
+        return tarea
     
     #Métodos de validación
     @staticmethod

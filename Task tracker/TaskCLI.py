@@ -5,14 +5,14 @@ class TaskCLI:
     
     # Constructor
     def __init__(self):
-        self.__task_manager = TaskManager()
+        self.__task_manager = TaskManager()  # Crear una instancia de TaskManager
     
     # Getter
-    def get_taskManager(self):
+    def get_task_manager(self):
         return self.__task_manager
         
     def run(self):
-        # Configuramos el parser de argumentos
+        # Configuración del parser de argumentos
         parser = argparse.ArgumentParser(
             description="Gestor de tareas CLI"
         )
@@ -24,7 +24,7 @@ class TaskCLI:
         add_parser.add_argument("description", type=str, help="Descripción de la tarea")
         
         # Comando para actualizar una tarea
-        update_parser = subparsers.add_parser("update", help="Actualiza una tarea")
+        update_parser = subparsers.add_parser("update", help="Actualizar una tarea")
         update_parser.add_argument("id", type=int, help="ID de la tarea a actualizar")
         update_parser.add_argument("description", type=str, help="Nueva descripción de la tarea")
         
@@ -33,11 +33,18 @@ class TaskCLI:
         self.dispatch_command(args)
         
     def dispatch_command(self, args):
-        print(f"Comando recibido: {args.command}")  # Depuración
-        # Procesa el comando y llamada al método adecuado de TaskManager
+        # Procesamos el comando y llamamos al método adecuado de TaskManager
         if args.command == "add":
+            # Añadir tarea
             self.__task_manager.add_tarea(args.description)
         elif args.command == "update":
+            # Actualizar tarea (si implementas esa funcionalidad más tarde)
             self.__task_manager.update_tarea(args.id, args.description)
         else:
             print("Comando desconocido. Usa '--help' para ver los comandos disponibles")
+
+
+# Ejecución directa del script (si se ejecuta desde la terminal)
+if __name__ == "__main__":
+    task_cli = TaskCLI()
+    task_cli.run()
