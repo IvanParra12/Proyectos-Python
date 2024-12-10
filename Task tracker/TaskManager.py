@@ -9,9 +9,8 @@ class TaskManager:
         self.crear_archivo()
 
     def crear_archivo(self):
-        """
-        Crea el archivo JSON si no existe.
-        """
+        
+        #Crea el archivo JSON si no existe.
         if not os.path.exists(self.__fichero_tareas):
             print(f"El archivo '{self.__fichero_tareas}' no existe. Creándolo...")
             with open(self.__fichero_tareas, 'w') as archivo:
@@ -49,7 +48,7 @@ class TaskManager:
         try:
             nueva_tarea = Task(descripcion)
             self.__tareas.append(nueva_tarea)
-            self.guardar_tareas()  # Guardar las tareas en el archivo JSON
+            self.guardar_tareas()
             print(f"Tarea añadida correctamente! (ID: {nueva_tarea.get_id()})")
         except Exception as e:
             print(f"Error al añadir la tarea: {e}")
@@ -65,8 +64,24 @@ class TaskManager:
                 return
             
             tarea.set_description(nueva_descripcion)
-            self.guardar_tareas()  # Guardar después de la actualización
+            self.guardar_tareas()
             print(f'Tarea con ID: {id} actualizada correctamente!')
         
         except Exception as e:
             print(f'Error al actualizar la tarea: {e}')
+            
+    def borrar_tarea(self, id):
+        try:
+            # Buscar la tarea por ID
+            tarea = next((tarea for tarea in self.__tareas if tarea.get_id() == id), None)
+            
+            if not tarea:
+                print(f'No se encontró la tarea con ID: {id}')
+                return
+            
+            self.__tareas.remove(tarea)
+            self.guardar_tareas()
+            print(f'Tarea con ID: {id} borrada correctamente!')
+            
+        except Exception as e:
+            print(f'Error al eliminar la tarea: {e}')

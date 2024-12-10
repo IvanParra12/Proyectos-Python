@@ -28,6 +28,10 @@ class TaskCLI:
         update_parser.add_argument("id", type=int, help="ID de la tarea a actualizar")
         update_parser.add_argument("description", type=str, help="Nueva descripción de la tarea")
         
+        #Comando para borrar una tarea
+        delete_parser = subparsers.add_parser("delete", help="Borrar una tarea")
+        delete_parser.add_argument("id", type=int, help="ID de la tarea a eliminar")
+        
         # Parseamos los argumentos
         args = parser.parse_args()
         self.dispatch_command(args)
@@ -38,8 +42,11 @@ class TaskCLI:
             # Añadir tarea
             self.__task_manager.add_tarea(args.description)
         elif args.command == "update":
-            # Actualizar tarea (si implementas esa funcionalidad más tarde)
+            # Actualizar tarea
             self.__task_manager.update_tarea(args.id, args.description)
+        elif args.command == "delete":
+            #Borrar tarea
+            self.__task_manager.borrar_tarea(args.id)
         else:
             print("Comando desconocido. Usa '--help' para ver los comandos disponibles")
 
