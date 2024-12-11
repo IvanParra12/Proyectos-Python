@@ -85,3 +85,30 @@ class TaskManager:
             
         except Exception as e:
             print(f'Error al eliminar la tarea: {e}')
+            
+    def update_status(self, command, id):
+        
+        try:
+            # Buscar la tarea por ID
+            tarea = next((tarea for tarea in self.__tareas if tarea.get_id() == id), None)
+            
+            if not tarea:
+                print(f'No se encontró la tarea con ID: {id}')
+                return
+            
+            # Mapear comandos a estados
+            if command == 'mark-in-progress':
+                tarea.set_status('In Progress')
+            elif command == 'mark-todo':
+                tarea.set_status('To do')
+            elif command == 'mark-done':
+                tarea.set_status('Done')
+            else:
+                print(f"Comando '{command}' incorrecto.")
+                return
+            
+            self.guardar_tareas()
+            print(f"El estado de la tarea con ID {id} ha sido actualizado a '{tarea.get_status()}'.")
+        
+        except Exception as e:
+            print(f'Error al actualizar el status de la tarea: {e}')

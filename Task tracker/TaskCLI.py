@@ -28,6 +28,12 @@ class TaskCLI:
         update_parser.add_argument("id", type=int, help="ID de la tarea a actualizar")
         update_parser.add_argument("description", type=str, help="Nueva descripción de la tarea")
         
+        # Comandos para actualizar el estado de una tarea
+        status_commands = ["mark-in-progress", "mark-todo", "mark-done"]
+        for command in status_commands:
+            status_parser = subparsers.add_parser(command, help=f"Marcar una tarea como {command.split('-')[-1]}")
+            status_parser.add_argument("id", type=int, help="ID de la tarea a actualizar")
+        
         #Comando para borrar una tarea
         delete_parser = subparsers.add_parser("delete", help="Borrar una tarea")
         delete_parser.add_argument("id", type=int, help="ID de la tarea a eliminar")
@@ -44,6 +50,9 @@ class TaskCLI:
         elif args.command == "update":
             # Actualizar tarea
             self.__task_manager.update_tarea(args.id, args.description)
+        elif args.command in ["mark-in-progress", "mark-todo", "mark-done"]:
+            # Actualizar el estado de una tarea
+            self.__task_manager.update_status(args.command, args.id)
         elif args.command == "delete":
             #Borrar tarea
             self.__task_manager.borrar_tarea(args.id)

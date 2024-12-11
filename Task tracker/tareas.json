@@ -2,8 +2,8 @@
     {
         "id": 1,
         "description": "Buy groceries",
-        "status": "To do",
+        "status": "In Progress",
         "created_at": "2024-12-06 21:25:02",
-        "updated_at": "No"
+        "updated_at": "2024-12-11 21:32:36"
     }
 ]
