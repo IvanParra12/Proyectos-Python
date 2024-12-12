@@ -7,34 +7,35 @@ class TaskManager:
         self.__fichero_tareas = fichero_tareas
         self.__tareas = []
         self.crear_archivo()
-
+        
+    #Crea el archivo JSON si no existe
     def crear_archivo(self):
         
-        #Crea el archivo JSON si no existe.
         if not os.path.exists(self.__fichero_tareas):
             print(f"El archivo '{self.__fichero_tareas}' no existe. Creándolo...")
             with open(self.__fichero_tareas, 'w') as archivo:
                 json.dump([], archivo)  # Inicializar con una lista vacía
             print(f"Archivo '{self.__fichero_tareas}' creado correctamente.")
-        else:
-            print(f"El archivo '{self.__fichero_tareas}' ya existe.")
+        
         self.cargar_tareas()  # Cargamos las tareas existentes
-
+        
+    #Carga las tareas desde el archivo JSON
     def cargar_tareas(self):
         
-        #Carga las tareas desde el archivo JSON.
         try:
+            
             with open(self.__fichero_tareas, "r") as archivo:
                 datos_tareas = json.load(archivo)
                 self.__tareas = [Task.from_dict(tarea) for tarea in datos_tareas]
+                
         except json.JSONDecodeError:
             print("El archivo JSON está vacío o no tiene un formato válido. Iniciando una lista vacía.")
         except Exception as e:
             print(f"Error inesperado al cargar las tareas: {e}")
-
+        
+    #Guarda las tareas en el archivo JSON
     def guardar_tareas(self):
 
-        #Guarda las tareas en el archivo JSON.
         try:
             datos_tareas = [tarea.to_dict() for tarea in self.__tareas]
             with open(self.__fichero_tareas, 'w') as archivo:
@@ -69,7 +70,8 @@ class TaskManager:
         
         except Exception as e:
             print(f'Error al actualizar la tarea: {e}')
-            
+    
+    #Borrar una tarea        
     def borrar_tarea(self, id):
         try:
             # Buscar la tarea por ID
@@ -85,7 +87,8 @@ class TaskManager:
             
         except Exception as e:
             print(f'Error al eliminar la tarea: {e}')
-            
+    
+    #Actualizar el estado de una tarea por ID        
     def update_status(self, command, id):
         
         try:
@@ -112,3 +115,20 @@ class TaskManager:
         
         except Exception as e:
             print(f'Error al actualizar el status de la tarea: {e}')
+    
+    #Mostrar todas las tareas        
+    def mostrar_tareas(self):
+        
+        try:
+            if not self.__tareas:
+                print("No hay tareas disponibles.")
+                return
+        
+            print("Mostrando todas las tareas:")
+            
+            for t in self.__tareas:
+                print(t.__str__())
+                
+        except Exception as e:
+            print(f'Error al mostrar las tareas: {e}')
+            

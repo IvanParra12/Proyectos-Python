@@ -38,6 +38,9 @@ class TaskCLI:
         delete_parser = subparsers.add_parser("delete", help="Borrar una tarea")
         delete_parser.add_argument("id", type=int, help="ID de la tarea a eliminar")
         
+        #Comando para mostrar todas las tareas
+        list_parser = subparsers.add_parser("list", help="Mostrar todas las tareas")
+        
         # Parseamos los argumentos
         args = parser.parse_args()
         self.dispatch_command(args)
@@ -56,6 +59,9 @@ class TaskCLI:
         elif args.command == "delete":
             #Borrar tarea
             self.__task_manager.borrar_tarea(args.id)
+        elif args.command == "list":
+            #Mostrar todas las tareas
+            self.__task_manager.mostrar_tareas()
         else:
             print("Comando desconocido. Usa '--help' para ver los comandos disponibles")
 

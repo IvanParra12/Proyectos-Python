@@ -64,7 +64,7 @@ class Task():
             "id": self.__id,
             "description": self.__description,
             "status": self.__status,
-            "created_at": self.__createdAt.strftime("%Y-%m-%d %H:%M:%S"),  # Convertimos a string
+            "created_at": self.__createdAt.strftime("%Y-%m-%d %H:%M:%S"),
             "updated_at": self.__updatedAt.strftime("%Y-%m-%d %H:%M:%S") if self.__updatedAt else "No"
         }
     
