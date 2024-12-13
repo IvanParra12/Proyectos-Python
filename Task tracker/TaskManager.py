@@ -132,3 +132,43 @@ class TaskManager:
         except Exception as e:
             print(f'Error al mostrar las tareas: {e}')
             
+    def mostrar_tareas_byStatus(self, status=None):
+        
+        try:
+            if not self.__tareas:
+                print("No hay tareas disponibles.")
+                return
+            
+            # Mapeo de estados aceptados
+            estado_mapeo = {
+                "todo": "To do",
+                "to do": "To do",
+                "in-progress": "In progress",
+                "in progress": "In progress",
+                "done": "Done"
+            }
+
+            if status:
+                # Normalizar el estado proporcionado
+                status_normalizado = estado_mapeo.get(status.lower())
+                
+                if not status_normalizado:
+                    print(f"Estado '{status}' no reconocido. Estados válidos: {', '.join(estado_mapeo.keys())}")
+                    return
+
+                print(f"Mostrando tareas con estado '{status_normalizado}':")
+                tareas_filtradas = [tarea for tarea in self.__tareas if tarea.get_status() == status_normalizado]
+                
+                if not tareas_filtradas:
+                    print(f"No hay tareas con el estado '{status_normalizado}'.")
+                    return
+
+                for tarea in tareas_filtradas:
+                    print(tarea.__str__())
+                else: 
+                    self.mostrar_tareas()
+                    
+        except Exception as e:
+            print(f'Error al mostrar las tareas por estado: {e}')
+
+                    

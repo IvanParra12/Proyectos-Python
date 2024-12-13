@@ -7,12 +7,12 @@ class Task():
     _contador_id = 0
     
     #Constructor
-    def __init__(self, description, status = "To do"):
+    def __init__(self, description, status="To do"):
         self.__id = self._incrementar_id()
         self.__description = self.validar_string(description)
         self.__status = status
-        self.__createdAt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        self.__updatedAt = 'No'
+        self.__createdAt = datetime.now()
+        self.__updatedAt = None
         
     def __str__(self): 
         return (
@@ -50,8 +50,7 @@ class Task():
         
     def set_updatedAt(self):
         self.__updatedAt = datetime.now()
-        return f'{self.__updatedAt.strftime("%Y-%m-%d %H:%M:%S")}'
-    
+
     @classmethod
     def _incrementar_id(cls):
         cls._contador_id += 1
@@ -64,19 +63,20 @@ class Task():
             "id": self.__id,
             "description": self.__description,
             "status": self.__status,
-            "created_at": self.__createdAt.strftime("%Y-%m-%d %H:%M:%S"),
+            "created_at": self.__createdAt.strftime("%Y-%m-%d %H:%M:%S"),  # Siempre como string
             "updated_at": self.__updatedAt.strftime("%Y-%m-%d %H:%M:%S") if self.__updatedAt else "No"
         }
-    
+
     @staticmethod
     def from_dict(data):
-        # Crear una tarea desde un diccionario
+        #Crear una tarea desde diccionario
         tarea = Task(data['description'])
         tarea.__id = data['id']
         tarea.__status = data['status']
-        tarea.__createdAt = datetime.strptime(data['created_at'], "%Y-%m-%d %H:%M:%S")  # Convertimos de string a datetime
+        tarea.__createdAt = datetime.strptime(data['created_at'], "%Y-%m-%d %H:%M:%S")  # String a datetime
         tarea.__updatedAt = datetime.strptime(data['updated_at'], "%Y-%m-%d %H:%M:%S") if data['updated_at'] != "No" else None
         return tarea
+
     
     #Métodos de validación
     @staticmethod
