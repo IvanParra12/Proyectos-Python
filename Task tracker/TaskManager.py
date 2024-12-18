@@ -57,45 +57,47 @@ class TaskManager:
     # Actualizar tarea
     def update_tarea(self, id, nueva_descripcion):
         try:
-            # Buscar la tarea por ID
-            tarea = next((tarea for tarea in self.__tareas if tarea.get_id() == id), None)
             
-            if not tarea:
-                print(f'No se encontró la tarea con ID: {id}')
+            if not self.comprobar_tareas():
                 return
+            
+            # Buscar la tarea por ID
+            tarea = self.comprobar_id(id)
             
             tarea.set_description(nueva_descripcion)
             self.guardar_tareas()
             print(f'Tarea con ID: {id} actualizada correctamente!')
         
-        except Exception as e:
+        except ValueError as e:
             print(f'Error al actualizar la tarea: {e}')
     
     #Borrar una tarea        
     def borrar_tarea(self, id):
         try:
-            # Buscar la tarea por ID
-            tarea = next((tarea for tarea in self.__tareas if tarea.get_id() == id), None)
             
             if not self.comprobar_tareas():
                 return
+            
+            # Buscar la tarea por ID
+            tarea = self.comprobar_id(id)
             
             self.__tareas.remove(tarea)
             self.guardar_tareas()
             print(f'Tarea con ID: {id} borrada correctamente!')
             
-        except Exception as e:
+        except ValueError as e:
             print(f'Error al eliminar la tarea: {e}')
     
     #Actualizar el estado de una tarea por ID        
     def update_status(self, command, id):
         
         try:
-            # Buscar la tarea por ID
-            tarea = next((tarea for tarea in self.__tareas if tarea.get_id() == id), None)
             
             if not self.comprobar_tareas():
                 return
+            
+            # Buscar la tarea por ID
+            tarea = self.comprobar_id(id)
             
             # Mapear comandos a estados
             if command == 'mark-in-progress':
@@ -111,7 +113,7 @@ class TaskManager:
             self.guardar_tareas()
             print(f"El estado de la tarea con ID {id} ha sido actualizado a '{tarea.get_status()}'.")
         
-        except Exception as e:
+        except ValueError as e:
             print(f'Error al actualizar el status de la tarea: {e}')
     
     #Mostrar todas las tareas        
@@ -175,5 +177,18 @@ class TaskManager:
             return False
         
         return True
+    
+    def comprobar_id(self, id):
+
+        # Verifica si una tarea con el ID proporcionado existe en la lista de tareas.
+        # Si la encuentra devuelve la tarea, pero si no, devuelve None
+        
+        tarea = next((tarea for tarea in self.__tareas if tarea.get_id() == id), None)
+        if not tarea:
+            raise ValueError(f"No se encontró ninguna tarea con el ID: {id}")
+        return tarea
+
+        
+        
 
                     
