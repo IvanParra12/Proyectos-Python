@@ -77,8 +77,7 @@ class TaskManager:
             # Buscar la tarea por ID
             tarea = next((tarea for tarea in self.__tareas if tarea.get_id() == id), None)
             
-            if not tarea:
-                print(f'No se encontró la tarea con ID: {id}')
+            if not self.comprobar_tareas():
                 return
             
             self.__tareas.remove(tarea)
@@ -95,8 +94,7 @@ class TaskManager:
             # Buscar la tarea por ID
             tarea = next((tarea for tarea in self.__tareas if tarea.get_id() == id), None)
             
-            if not tarea:
-                print(f'No se encontró la tarea con ID: {id}')
+            if not self.comprobar_tareas():
                 return
             
             # Mapear comandos a estados
@@ -120,8 +118,7 @@ class TaskManager:
     def mostrar_tareas(self):
         
         try:
-            if not self.__tareas:
-                print("No hay tareas disponibles.")
+            if not self.comprobar_tareas():
                 return
         
             print("Mostrando todas las tareas:")
@@ -135,8 +132,7 @@ class TaskManager:
     def mostrar_tareas_byStatus(self, status=None):
         
         try:
-            if not self.__tareas:
-                print("No hay tareas disponibles.")
+            if not self.comprobar_tareas():
                 return
             
             # Mapeo de estados aceptados
@@ -165,10 +161,19 @@ class TaskManager:
 
                 for tarea in tareas_filtradas:
                     print(tarea.__str__())
-                else: 
-                    self.mostrar_tareas()
+                    
+            else: 
+                self.mostrar_tareas()
                     
         except Exception as e:
             print(f'Error al mostrar las tareas por estado: {e}')
+            
+    def comprobar_tareas(self):
+        
+        if not self.__tareas:
+            print("No hay tareas disponibles")
+            return False
+        
+        return True
 
                     
